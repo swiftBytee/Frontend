@@ -9,7 +9,9 @@ export const ENDPOINTS = {
   // ---------- Auth ----------
   AUTH: {
     LOGIN: "/auth/login",
-    VERIFY_OTP: "/auth/verify-otp",
+    FORGOT_PASSWORD: "/auth/forgot-password",
+    RESET_PASSWORD: "/auth/reset-password",
+    CHANGE_PASSWORD: "/auth/change-password",
   },
 
   // ---------- Customers ----------
@@ -17,6 +19,12 @@ export const ENDPOINTS = {
     LIST: "/customers",
     CREATE: "/customers",
     DETAIL: (id: number | string) => `/customers/${id}`,
+  },
+
+  COMPANY: {
+    GET: "/company",
+    UPDATE: "/company",
+    UPLOAD_LOGO: "/company/logo",
   },
 
   // ---------- KYC ----------
@@ -39,6 +47,50 @@ export const ENDPOINTS = {
     CREATE: "/loans",
     UPDATE: (loanId: number | string) => `/loans/${loanId}`,
     UPDATE_STATUS: (loanId: number | string) => `/loans/${loanId}/status`,
+  },
+  DEMAT: {
+    BANKS: {
+      LIST: "/demat/banks",
+      DETAIL: (id: number | string) => `/demat/banks/${id}`,
+      CREATE: "/demat/banks",
+      UPDATE: (id: number | string) => `/demat/banks/${id}`,
+      DELETE: (id: number | string) => `/demat/banks/${id}`,
+      UPLOAD_LOGO: (id: number | string) => `/demat/banks/${id}/logo`,
+    },
+    APPLICATIONS: {
+      LIST: "/demat/applications",
+      DETAIL: (id: number | string) => `/demat/applications/${id}`,
+      CREATE: "/demat/applications",
+      UPDATE_STATUS: (id: number | string) =>
+        `/demat/applications/${id}/status`,
+    },
+  },
+
+  CREDIT_CARDS: {
+    APPLICATIONS: {
+      LIST: "/credit-cards/applications",
+      DETAIL: (id: number | string) => `/credit-cards/applications/${id}`,
+      CREATE: "/credit-cards/applications",
+      UPDATE_STATUS: (id: number | string) =>
+        `/credit-cards/applications/${id}/status`,
+    },
+  },
+  SAVINGS: {
+    BANKS: {
+      LIST: "/savings/banks",
+      DETAIL: (id: number | string) => `/savings/banks/${id}`,
+      CREATE: "/savings/banks",
+      UPDATE: (id: number | string) => `/savings/banks/${id}`,
+      DELETE: (id: number | string) => `/savings/banks/${id}`,
+      UPLOAD_LOGO: (id: number | string) => `/savings/banks/${id}/logo`,
+    },
+    APPLICATIONS: {
+      LIST: "/savings/applications",
+      DETAIL: (id: number | string) => `/savings/applications/${id}`,
+      CREATE: "/savings/applications",
+      UPDATE_STATUS: (id: number | string) =>
+        `/savings/applications/${id}/status`,
+    },
   },
 
   // ---------- EMIs ----------
@@ -77,6 +129,9 @@ export const ENDPOINTS = {
     CREATE: "/banks",
     DETAIL: (id: number | string) => `/banks/${id}`,
     UPDATE: (id: number | string) => `/banks/${id}`,
+    DELETE: (id: number | string) => `/banks/${id}`,
+    UPLOAD_LOGO: (id: number | string) => `/banks/${id}/logo`,
+    REMOVE_LOGO: (id: number | string) => `/banks/${id}/logo`,
   },
 
   // ---------- Analytics ----------
@@ -95,6 +150,30 @@ export const ENDPOINTS = {
     BUSINESS_OVERDUE_AGING: "/analytics/business/overdue-aging",
     BUSINESS_RECENT_ACTIVITY: "/analytics/business/recent-activity",
     BUSINESS_TOP_CUSTOMERS: "/analytics/business/top-customers",
+    BUSINESS_PRODUCT_MIX: "/analytics/business/product-mix",
+    BUSINESS_DISBURSEMENT_TREND: "/analytics/business/disbursement-trend",
+    BUSINESS_LOAN_TYPE_DIST: "/analytics/business/loan-type-dist",
+    BUSINESS_CUSTOMERS_BY_CITY: "/analytics/business/customers-by-city",
+    BUSINESS_COLLECTION_EFFICIENCY: "/analytics/business/collection-efficiency",
+    BUSINESS_INTEREST_TYPE_SPLIT: "/analytics/business/interest-type-split",
+    BUSINESS_AGENT_LEADERBOARD: "/analytics/business/agent-leaderboard",
+    BUSINESS_KYC_FUNNEL: "/analytics/business/kyc-funnel",
+  },
+  MASTERS: {
+    BUSINESS_TYPES: {
+      LIST: "/masters/business-types",
+      DETAIL: (id: number | string) => `/masters/business-types/${id}`,
+      CREATE: "/masters/business-types",
+      UPDATE: (id: number | string) => `/masters/business-types/${id}`,
+      DELETE: (id: number | string) => `/masters/business-types/${id}`,
+    },
+    BUSINESS_CATEGORIES: {
+      LIST: "/masters/business-categories",
+      DETAIL: (id: number | string) => `/masters/business-categories/${id}`,
+      CREATE: "/masters/business-categories",
+      UPDATE: (id: number | string) => `/masters/business-categories/${id}`,
+      DELETE: (id: number | string) => `/masters/business-categories/${id}`,
+    },
   },
 
   // ---------- Reports ----------

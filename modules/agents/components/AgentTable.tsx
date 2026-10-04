@@ -4,6 +4,8 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Search, MoreHorizontal, Settings, Power, Eye } from "lucide-react";
+import { CreditCard } from "lucide-react";
+import { AgentIdCardModal } from "./AgentIdCardModal";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -42,6 +44,7 @@ export function AgentTable({
   const [search, setSearch] = useState("");
   const [toggleTarget, setToggleTarget] = useState<Agent | null>(null);
   const toggleM = useToggleAgentStatus();
+  const [idCardTarget, setIdCardTarget] = useState<Agent | null>(null);
 
   const filtered = useMemo(() => {
     if (!data) return [];
@@ -142,6 +145,10 @@ export function AgentTable({
                             <Eye className="mr-2 h-4 w-4" />
                             View details
                           </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setIdCardTarget(a)}>
+                            <CreditCard className="mr-2 h-4 w-4" />
+                            Download ID Card
+                          </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => onManagePermissions(a)}
                           >
@@ -193,6 +200,13 @@ export function AgentTable({
         onConfirm={confirmToggle}
         loading={toggleM.isPending}
       />
+      {idCardTarget && (
+        <AgentIdCardModal
+          agentId={idCardTarget.agent_id}
+          open={Boolean(idCardTarget)}
+          onOpenChange={(o) => !o && setIdCardTarget(null)}
+        />
+      )}
     </div>
   );
 }

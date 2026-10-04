@@ -4,25 +4,21 @@ import { ENDPOINTS } from "@/lib/api/endpoints";
 import type {
   LoginPayload,
   LoginResponse,
-  VerifyOtpPayload,
-  VerifyOtpResponse,
+  ForgotPasswordPayload,
+  ResetPasswordPayload,
 } from "../types";
 
 export const authService = {
-  /**
-   * Step 1: email + password + role → backend generates OTP, sends email/SMS.
-   * No JWT issued at this step.
-   */
-  async initiateLogin(payload: LoginPayload): Promise<LoginResponse> {
+  async login(payload: LoginPayload): Promise<LoginResponse> {
     const res = await api.post(ENDPOINTS.AUTH.LOGIN, payload);
     return unwrap<LoginResponse>(res);
   },
 
-  /**
-   * Step 2: email + otp + role → backend validates OTP, returns JWT + user.
-   */
-  async verifyOtp(payload: VerifyOtpPayload): Promise<VerifyOtpResponse> {
-    const res = await api.post(ENDPOINTS.AUTH.VERIFY_OTP, payload);
-    return unwrap<VerifyOtpResponse>(res);
+  async forgotPassword(payload: ForgotPasswordPayload): Promise<void> {
+    await api.post(ENDPOINTS.AUTH.FORGOT_PASSWORD, payload);
+  },
+
+  async resetPassword(payload: ResetPasswordPayload): Promise<void> {
+    await api.post(ENDPOINTS.AUTH.RESET_PASSWORD, payload);
   },
 };

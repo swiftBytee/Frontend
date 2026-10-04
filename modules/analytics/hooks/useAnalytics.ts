@@ -22,6 +22,15 @@ export const analyticsKeys = {
   adminOverview: ["analytics", "admin-overview"] as const,
   agentSummary: (agentId: number | string) =>
     ["analytics", "agent-summary", String(agentId)] as const,
+  productMix: ["analytics", "product-mix"] as const,
+  disbursementTrend: (months: number) =>
+    ["analytics", "disbursement-trend", months] as const,
+  loanTypeDist: ["analytics", "loan-type-dist"] as const,
+  customersByCity: ["analytics", "customers-by-city"] as const,
+  collectionEfficiency: ["analytics", "collection-efficiency"] as const,
+  interestTypeSplit: ["analytics", "interest-type-split"] as const,
+  agentLeaderboard: ["analytics", "agent-leaderboard"] as const,
+  kycFunnel: ["analytics", "kyc-funnel"] as const,
 };
 
 export function useBusinessKpis(
@@ -103,5 +112,61 @@ export function useAgentSummary(agentId: number | string | undefined) {
     queryKey: analyticsKeys.agentSummary(agentId ?? ""),
     queryFn: () => analyticsService.agentSummary(agentId!),
     enabled: Boolean(agentId),
+  });
+}
+
+export function useProductMix() {
+  return useQuery({
+    queryKey: analyticsKeys.productMix,
+    queryFn: () => analyticsService.getProductMix(),
+  });
+}
+
+export function useDisbursementTrend(months = 6) {
+  return useQuery({
+    queryKey: analyticsKeys.disbursementTrend(months),
+    queryFn: () => analyticsService.getDisbursementTrend({ months }),
+  });
+}
+
+export function useLoanTypeDistribution() {
+  return useQuery({
+    queryKey: analyticsKeys.loanTypeDist,
+    queryFn: () => analyticsService.getLoanTypeDistribution(),
+  });
+}
+
+export function useCustomersByCity(limit = 8) {
+  return useQuery({
+    queryKey: analyticsKeys.customersByCity,
+    queryFn: () => analyticsService.getCustomersByCity({ limit }),
+  });
+}
+
+export function useCollectionEfficiency() {
+  return useQuery({
+    queryKey: analyticsKeys.collectionEfficiency,
+    queryFn: () => analyticsService.getCollectionEfficiency(),
+  });
+}
+
+export function useInterestTypeSplit() {
+  return useQuery({
+    queryKey: analyticsKeys.interestTypeSplit,
+    queryFn: () => analyticsService.getInterestTypeSplit(),
+  });
+}
+
+export function useAgentLeaderboard(limit = 10) {
+  return useQuery({
+    queryKey: analyticsKeys.agentLeaderboard,
+    queryFn: () => analyticsService.getAgentLeaderboard({ limit }),
+  });
+}
+
+export function useKycFunnel() {
+  return useQuery({
+    queryKey: analyticsKeys.kycFunnel,
+    queryFn: () => analyticsService.getKycFunnel(),
   });
 }

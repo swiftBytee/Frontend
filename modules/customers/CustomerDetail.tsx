@@ -2,15 +2,17 @@
 "use client";
 
 import { useParams } from "next/navigation";
+
 import { PageHeader } from "@/components/shared/PageHeader";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
+
 import { CustomerProfileTab } from "./components/CustomerProfileTab";
 import { CustomerDocumentsTab } from "./components/CustomerDocumentsTab";
 import { CustomerLoansTab } from "./components/CustomerLoansTab";
 import { CustomerEmisTab } from "./components/CustomerEmisTab";
 import { useCustomerDetail } from "./hooks/useCustomers";
-import { Skeleton } from "@/components/ui/skeleton";
 import { KycStatusCard } from "@/modules/kyc/components/KycStatusCard";
 
 export default function CustomerDetail() {

@@ -11,6 +11,11 @@ import {
   FileText,
   History,
   type LucideIcon,
+  TrendingUp,
+  CreditCard,
+  PiggyBank,
+  Briefcase,
+  Layers,
 } from "lucide-react";
 import { ROLE, type Role } from "@/lib/constants/statuses";
 
@@ -61,6 +66,24 @@ export const NAV_SECTIONS: NavSection[] = [
         roles: [ROLE.ADMIN, ROLE.AGENT],
       },
       {
+        label: "Demat Accounts",
+        href: "/demat",
+        icon: TrendingUp,
+        roles: [ROLE.ADMIN, ROLE.AGENT],
+      },
+      {
+        label: "Credit Cards",
+        href: "/credit-cards",
+        icon: CreditCard,
+        roles: [ROLE.ADMIN, ROLE.AGENT],
+      },
+      {
+        label: "Savings Accounts",
+        href: "/savings",
+        icon: PiggyBank,
+        roles: [ROLE.ADMIN, ROLE.AGENT],
+      },
+      {
         label: "EMIs",
         href: "/emis",
         icon: CalendarClock,
@@ -95,12 +118,12 @@ export const NAV_SECTIONS: NavSection[] = [
         icon: BarChart3,
         roles: [ROLE.ADMIN, ROLE.AGENT],
       },
-      {
-        label: "Reports",
-        href: "/reports",
-        icon: FileText,
-        roles: [ROLE.ADMIN],
-      },
+      // {
+      //   label: "Reports",
+      //   href: "/reports",
+      //   icon: FileText,
+      //   roles: [ROLE.ADMIN],
+      // },
       {
         label: "Audit Logs",
         href: "/audit-logs",
@@ -109,6 +132,23 @@ export const NAV_SECTIONS: NavSection[] = [
       },
     ],
   },
+  // {
+  //   title: "Masters",
+  //   items: [
+  //     {
+  //       label: "Business Types",
+  //       href: "/masters/business-types",
+  //       icon: Briefcase,
+  //       roles: [ROLE.ADMIN],
+  //     },
+  //     {
+  //       label: "Business Categories",
+  //       href: "/masters/business-categories",
+  //       icon: Layers,
+  //       roles: [ROLE.ADMIN],
+  //     },
+  //   ],
+  // },
   {
     title: "Account",
     items: [

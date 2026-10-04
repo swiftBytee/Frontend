@@ -3,9 +3,10 @@
 
 import Link from "next/link";
 import { ArrowRight, UserCog } from "lucide-react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatNumber } from "@/lib/format";
 
@@ -30,10 +31,13 @@ export function AgentPerformanceMini({
     <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base">Agent Performance</CardTitle>
-        <Button variant="ghost" size="sm" render={<Link href="/agents" />}>
+        <Link
+          href="/agents"
+          className={buttonVariants({ variant: "ghost", size: "sm" })}
+        >
           View all
           <ArrowRight className="ml-1 h-3 w-3" />
-        </Button>
+        </Link>
       </CardHeader>
       <CardContent>
         {loading ? (

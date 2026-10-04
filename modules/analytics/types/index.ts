@@ -106,3 +106,58 @@ export type DateRangePreset =
   | "this_fy"
   | "custom"
   | "all";
+
+export interface ProductMixRow {
+  product: string;
+  count: number;
+  color: string;
+}
+
+export interface DisbursementTrendRow {
+  month: string;
+  count: number;
+  disbursed: string | number;
+}
+
+export interface LoanTypeDistributionRow {
+  loan_type: string;
+  count: number;
+  total_amount: string | number;
+}
+
+export interface CityDistributionRow {
+  city: string;
+  count: number;
+}
+
+export interface CollectionEfficiency {
+  collected: number;
+  outstanding: number;
+  overdue: number;
+  efficiency: number;
+  overdueRate: number;
+}
+
+export interface InterestTypeSplitRow {
+  interest_type: string;
+  count: number;
+  total_amount: string | number;
+}
+
+export interface AgentLeaderboardRow {
+  agent_id: number;
+  full_name: string;
+  email: string;
+  is_active: number;
+  total_customers: number;
+  total_loans: number;
+  portfolio_value: string | number;
+  total_collected: string | number;
+}
+
+export interface KycFunnel {
+  total: number;
+  pending: number;
+  approved: number;
+  rejected: number;
+}

@@ -14,6 +14,14 @@ import type {
   AdminAgentOverviewRow,
   AgentAnalytics,
   AgentProfileSummary,
+  InterestTypeSplitRow,
+  AgentLeaderboardRow,
+  KycFunnel,
+  CollectionEfficiency,
+  CityDistributionRow,
+  LoanTypeDistributionRow,
+  DisbursementTrendRow,
+  ProductMixRow,
 } from "../types";
 
 interface RangeParams {
@@ -107,5 +115,78 @@ export const analyticsService = {
   async agentSummary(agentId: number | string): Promise<AgentProfileSummary> {
     const res = await api.get(ENDPOINTS.ANALYTICS.ADMIN_AGENT_SUMMARY(agentId));
     return unwrap<AgentProfileSummary>(res);
+  },
+  async getProductMix(params?: {
+    agent_id?: number;
+  }): Promise<ProductMixRow[]> {
+    const res = await api.get(ENDPOINTS.ANALYTICS.BUSINESS_PRODUCT_MIX, {
+      params,
+    });
+    return unwrap<ProductMixRow[]>(res);
+  },
+
+  async getDisbursementTrend(params?: {
+    months?: number;
+    agent_id?: number;
+  }): Promise<DisbursementTrendRow[]> {
+    const res = await api.get(ENDPOINTS.ANALYTICS.BUSINESS_DISBURSEMENT_TREND, {
+      params,
+    });
+    return unwrap<DisbursementTrendRow[]>(res);
+  },
+
+  async getLoanTypeDistribution(params?: {
+    agent_id?: number;
+  }): Promise<LoanTypeDistributionRow[]> {
+    const res = await api.get(ENDPOINTS.ANALYTICS.BUSINESS_LOAN_TYPE_DIST, {
+      params,
+    });
+    return unwrap<LoanTypeDistributionRow[]>(res);
+  },
+
+  async getCustomersByCity(params?: {
+    limit?: number;
+    agent_id?: number;
+  }): Promise<CityDistributionRow[]> {
+    const res = await api.get(ENDPOINTS.ANALYTICS.BUSINESS_CUSTOMERS_BY_CITY, {
+      params,
+    });
+    return unwrap<CityDistributionRow[]>(res);
+  },
+
+  async getCollectionEfficiency(params?: {
+    agent_id?: number;
+  }): Promise<CollectionEfficiency> {
+    const res = await api.get(
+      ENDPOINTS.ANALYTICS.BUSINESS_COLLECTION_EFFICIENCY,
+      { params },
+    );
+    return unwrap<CollectionEfficiency>(res);
+  },
+
+  async getInterestTypeSplit(params?: {
+    agent_id?: number;
+  }): Promise<InterestTypeSplitRow[]> {
+    const res = await api.get(
+      ENDPOINTS.ANALYTICS.BUSINESS_INTEREST_TYPE_SPLIT,
+      { params },
+    );
+    return unwrap<InterestTypeSplitRow[]>(res);
+  },
+
+  async getAgentLeaderboard(params?: {
+    limit?: number;
+  }): Promise<AgentLeaderboardRow[]> {
+    const res = await api.get(ENDPOINTS.ANALYTICS.BUSINESS_AGENT_LEADERBOARD, {
+      params,
+    });
+    return unwrap<AgentLeaderboardRow[]>(res);
+  },
+
+  async getKycFunnel(params?: { agent_id?: number }): Promise<KycFunnel> {
+    const res = await api.get(ENDPOINTS.ANALYTICS.BUSINESS_KYC_FUNNEL, {
+      params,
+    });
+    return unwrap<KycFunnel>(res);
   },
 };

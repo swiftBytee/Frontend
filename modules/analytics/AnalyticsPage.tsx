@@ -26,6 +26,14 @@ import { CollectionsTrendChart } from "./components/CollectionsTrendChart";
 import { BankDistributionChart } from "./components/BankDistributionChart";
 import { OverdueAgingChart } from "./components/OverdueAgingChart";
 import { AgentOverviewTable } from "./components/AgentOverviewTable";
+import { ProductMixDonut } from "./components/ProductMixDonut";
+import { DisbursementTrendChart } from "./components/DisbursementTrendChart";
+import { LoanTypeDistChart } from "./components/LoanTypeDistChart";
+import { CollectionEfficiencyCard } from "./components/CollectionEfficiencyCard";
+import { KycFunnelCard } from "./components/KycFunnelCard";
+import { InterestTypeDonut } from "./components/InterestTypeDonut";
+import { CityDistributionChart } from "./components/CityDistributionChart";
+import { AgentLeaderboard } from "./components/AgentLeaderboard";
 
 import {
   useBusinessKpis,
@@ -34,6 +42,14 @@ import {
   useBankDistribution,
   useOverdueAging,
   useAdminOverview,
+  useProductMix,
+  useDisbursementTrend,
+  useLoanTypeDistribution,
+  useCollectionEfficiency,
+  useKycFunnel,
+  useInterestTypeSplit,
+  useCustomersByCity,
+  useAgentLeaderboard,
 } from "./hooks/useAnalytics";
 
 import type { DateRangePreset } from "./types";
@@ -45,12 +61,23 @@ export default function AnalyticsPage() {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
 
+  // Core
   const kpisQ = useBusinessKpis(range, start, end);
   const funnelQ = useLoanFunnel();
   const trendQ = useCollectionsTrend(6);
   const bankQ = useBankDistribution();
   const agingQ = useOverdueAging();
   const adminOverviewQ = useAdminOverview();
+
+  // Advanced
+  const productMixQ = useProductMix();
+  const disbTrendQ = useDisbursementTrend(6);
+  const loanTypeQ = useLoanTypeDistribution();
+  const efficiencyQ = useCollectionEfficiency();
+  const kycFunnelQ = useKycFunnel();
+  const interestSplitQ = useInterestTypeSplit();
+  const cityQ = useCustomersByCity(10);
+  const leaderboardQ = useAgentLeaderboard(10);
 
   const kpis = kpisQ.data;
 
@@ -73,7 +100,7 @@ export default function AnalyticsPage() {
         }
       />
 
-      {/* KPI Row */}
+      {/* ---------- KPI Row 1 ---------- */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           label="Total Customers"
@@ -113,7 +140,7 @@ export default function AnalyticsPage() {
         />
       </div>
 
-      {/* Secondary KPI row */}
+      {/* ---------- KPI Row 2 ---------- */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           label="Pending KYC"
@@ -149,14 +176,16 @@ export default function AnalyticsPage() {
         />
       </div>
 
-      {/* Tabs: Charts / Agents (admin only) */}
+      {/* ---------- Tabs ---------- */}
       <Tabs defaultValue="overview">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="advanced">Advanced</TabsTrigger>
           {isAdmin && <TabsTrigger value="agents">Agents</TabsTrigger>}
           {isAdmin && <TabsTrigger value="banks">Banks</TabsTrigger>}
         </TabsList>
 
+        {/* ============ OVERVIEW ============ */}
         <TabsContent value="overview" className="mt-6 space-y-4">
           <div className="grid gap-4 lg:grid-cols-2">
             <LoanFunnelChart data={funnelQ.data} loading={funnelQ.isLoading} />
@@ -176,17 +205,76 @@ export default function AnalyticsPage() {
           </div>
         </TabsContent>
 
+        {/* ============ ADVANCED ============ */}
+        <TabsContent value="advanced" className="mt-6 space-y-4">
+          {/* Collection efficiency + KYC funnel */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            <CollectionEfficiencyCard
+              data={efficiencyQ.data}
+              loading={efficiencyQ.isLoading}
+            />
+            <KycFunnelCard
+              data={kycFunnelQ.data}
+              loading={kycFunnelQ.isLoading}
+            />
+          </div>
+
+          {/* Disbursement trend (full width) */}
+          <DisbursementTrendChart
+            data={disbTrendQ.data}
+            loading={disbTrendQ.isLoading}
+          />
+
+          {/* Loan type pie + interest type donut */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            <LoanTypeDistChart
+              data={loanTypeQ.data}
+              loading={loanTypeQ.isLoading}
+            />
+            <InterestTypeDonut
+              data={interestSplitQ.data}
+              loading={interestSplitQ.isLoading}
+            />
+          </div>
+
+          {/* Product mix + customers by city */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            <ProductMixDonut
+              data={productMixQ.data}
+              loading={productMixQ.isLoading}
+            />
+            <CityDistributionChart
+              data={cityQ.data}
+              loading={cityQ.isLoading}
+            />
+          </div>
+
+          {/* Agent leaderboard (admin only) */}
+          {isAdmin && (
+            <AgentLeaderboard
+              data={leaderboardQ.data}
+              loading={leaderboardQ.isLoading}
+            />
+          )}
+        </TabsContent>
+
+        {/* ============ AGENTS (admin only) ============ */}
         {isAdmin && (
-          <TabsContent value="agents" className="mt-6">
+          <TabsContent value="agents" className="mt-6 space-y-4">
             <AgentOverviewTable
               data={adminOverviewQ.data}
               loading={adminOverviewQ.isLoading}
             />
+            <AgentLeaderboard
+              data={leaderboardQ.data}
+              loading={leaderboardQ.isLoading}
+            />
           </TabsContent>
         )}
 
+        {/* ============ BANKS (admin only) ============ */}
         {isAdmin && (
-          <TabsContent value="banks" className="mt-6">
+          <TabsContent value="banks" className="mt-6 space-y-4">
             <BankDistributionChart
               data={bankQ.data}
               loading={bankQ.isLoading}

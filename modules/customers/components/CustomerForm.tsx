@@ -406,7 +406,7 @@ export function CustomerForm() {
       >
         <div className="grid gap-4 md:grid-cols-3">
           <Field
-            label="National ID"
+            label="Aadhaar Number"
             required
             error={form.formState.errors.national_id_number?.message}
           >
@@ -414,7 +414,7 @@ export function CustomerForm() {
           </Field>
 
           <Field
-            label="Tax ID"
+            label="Pan Number"
             required
             error={form.formState.errors.tax_id_number?.message}
           >

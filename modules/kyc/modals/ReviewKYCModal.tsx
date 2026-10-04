@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useReviewKYC, useKycDocuments } from "../hooks/useKyc";
-import { formatDate } from "@/lib/format";
+import { formatDate, documentUrl } from "@/lib/format";
 
 export function ReviewKYCModal({
   customerId,
@@ -73,7 +73,7 @@ export function ReviewKYCModal({
         onOpenChange(o);
       }}
     >
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Review KYC</DialogTitle>
           <DialogDescription>
@@ -100,34 +100,38 @@ export function ReviewKYCModal({
               </div>
             ) : (
               <ul className="divide-y rounded-lg border">
-                {docsQ.data.map((doc) => (
-                  <li
-                    key={doc.document_id}
-                    className="flex items-center gap-3 p-3"
-                  >
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600">
-                      <FileText className="h-4 w-4" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium">
-                        {doc.document_type}
-                      </p>
-                      <p className="truncate text-xs text-muted-foreground">
-                        {doc.file_name} • {formatDate(doc.created_at)}
-                      </p>
-                    </div>
-                    {doc.file_path && (
-                      <a
-                        href={`http://localhost:5000/${doc.file_path.replace(/^.*?uploads/, "uploads")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs font-medium text-blue-600 hover:underline dark:text-blue-400"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5" />
-                      </a>
-                    )}
-                  </li>
-                ))}
+                {docsQ.data.map((doc) => {
+                  const url = documentUrl(doc.file_path);
+                  return (
+                    <li
+                      key={doc.document_id}
+                      className="flex items-center gap-3 p-3"
+                    >
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600">
+                        <FileText className="h-4 w-4" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium">
+                          {doc.document_type}
+                        </p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {doc.file_name} • {formatDate(doc.created_at)}
+                        </p>
+                      </div>
+                      {url && (
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex h-8 w-8 items-center justify-center rounded-md text-blue-600 hover:bg-muted dark:text-blue-400"
+                          aria-label="Open document"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>

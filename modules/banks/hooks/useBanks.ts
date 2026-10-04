@@ -19,6 +19,13 @@ export function useBanksList() {
   });
 }
 
+export function useActiveBanks() {
+  return useQuery({
+    queryKey: [...bankKeys.all, "active"],
+    queryFn: () => bankService.listActive(),
+  });
+}
+
 export function useCreateBank() {
   const qc = useQueryClient();
   return useMutation({
@@ -38,6 +45,44 @@ export function useUpdateBank(id: number | string | undefined) {
       bankService.update(id!, payload),
     onSuccess: () => {
       toast.success("Bank updated successfully.");
+      qc.invalidateQueries({ queryKey: bankKeys.all });
+    },
+    onError: (err) => toast.error(getErrorMessage(err)),
+  });
+}
+
+export function useDeleteBank() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number | string) => bankService.delete(id),
+    onSuccess: () => {
+      toast.success("Bank deleted.");
+      qc.invalidateQueries({ queryKey: bankKeys.all });
+    },
+    onError: (err) => toast.error(getErrorMessage(err)),
+  });
+}
+
+export function useUploadBankLogo() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ bankId, file }: { bankId: number | string; file: File }) =>
+      bankService.uploadLogo(bankId, file),
+    onSuccess: () => {
+      toast.success("Logo uploaded.");
+      qc.invalidateQueries({ queryKey: bankKeys.all });
+    },
+    onError: (err) => toast.error(getErrorMessage(err)),
+  });
+}
+
+export function useRemoveBankLogo() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ bankId }: { bankId: number | string }) =>
+      bankService.removeLogo(bankId),
+    onSuccess: () => {
+      toast.success("Logo removed.");
       qc.invalidateQueries({ queryKey: bankKeys.all });
     },
     onError: (err) => toast.error(getErrorMessage(err)),

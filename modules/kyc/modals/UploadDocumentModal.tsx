@@ -1,8 +1,8 @@
 // modules/kyc/modals/UploadDocumentModal.tsx
 "use client";
 
-import { useState, useRef } from "react";
-import { Upload, FileText, X, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 import {
   Dialog,
@@ -20,6 +20,7 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
+import { UploadInput } from "@/components/ui/upload-input";
 
 import { useUploadDocument } from "../hooks/useKyc";
 import { type SelectOption, optionTag } from "@/lib/format";
@@ -42,14 +43,6 @@ const DOC_TYPE_OPTIONS: SelectOption[] = DOCUMENT_TYPES.map((t) => ({
   tag: t,
 }));
 
-const MAX_SIZE_MB = 5;
-const ACCEPTED_TYPES = [
-  "application/pdf",
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-];
-
 export function UploadDocumentModal({
   customerId,
   open,
@@ -64,7 +57,6 @@ export function UploadDocumentModal({
   const [docType, setDocType] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const uploadM = useUploadDocument(customerId);
 
@@ -72,24 +64,6 @@ export function UploadDocumentModal({
     setDocType("");
     setFile(null);
     setError(null);
-    if (inputRef.current) inputRef.current.value = "";
-  };
-
-  const handleFile = (f: File | null) => {
-    setError(null);
-    if (!f) {
-      setFile(null);
-      return;
-    }
-    if (!ACCEPTED_TYPES.includes(f.type)) {
-      setError("Only PDF, JPG, JPEG, PNG allowed.");
-      return;
-    }
-    if (f.size > MAX_SIZE_MB * 1024 * 1024) {
-      setError(`Max file size is ${MAX_SIZE_MB}MB.`);
-      return;
-    }
-    setFile(f);
   };
 
   const handleSubmit = () => {
@@ -127,7 +101,7 @@ export function UploadDocumentModal({
         <DialogHeader>
           <DialogTitle>Upload KYC Document</DialogTitle>
           <DialogDescription>
-            PDF, JPG, JPEG, or PNG. Max {MAX_SIZE_MB}MB.
+            PDF, JPG, JPEG, or PNG. Max 5MB.
           </DialogDescription>
         </DialogHeader>
 
@@ -154,48 +128,16 @@ export function UploadDocumentModal({
           </div>
 
           <div className="space-y-2">
-            <Label>File</Label>
-            <div
-              className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/30 p-6 text-center transition-colors hover:border-primary/50 hover:bg-muted/30"
-              onClick={() => inputRef.current?.click()}
-            >
-              {file ? (
-                <>
-                  <FileText className="h-8 w-8 text-blue-500" />
-                  <p className="text-sm font-medium">{file.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {(file.size / 1024).toFixed(1)} KB
-                  </p>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleFile(null);
-                    }}
-                  >
-                    <X className="mr-1 h-3 w-3" />
-                    Remove
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Upload className="h-8 w-8 text-muted-foreground" />
-                  <p className="text-sm font-medium">Click to choose file</p>
-                  <p className="text-xs text-muted-foreground">
-                    PDF, JPG, PNG up to {MAX_SIZE_MB}MB
-                  </p>
-                </>
-              )}
-              <input
-                ref={inputRef}
-                type="file"
-                accept=".pdf,.jpg,.jpeg,.png"
-                className="hidden"
-                onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
-              />
-            </div>
+            <Label>
+              File <span className="text-destructive">*</span>
+            </Label>
+            <UploadInput
+              variant="document"
+              maxSizeMB={5}
+              onFileSelect={setFile}
+              label="Choose file"
+              loading={uploadM.isPending}
+            />
           </div>
 
           {error && <p className="text-xs text-destructive">{error}</p>}

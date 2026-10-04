@@ -161,26 +161,46 @@ export function LoanStatusModal({
           )}
 
           {requiresBankRef && (
-            <div className="space-y-2">
-              <Label>Partner Bank</Label>
-              <Select
-                value={bankId ? String(bankId) : ""}
-                onValueChange={(v) => setBankId(v ? Number(v) : null)}
-              >
-                <SelectTrigger>
-                  <span className={!bankId ? "text-muted-foreground" : ""}>
-                    {optionTag(bankOptions, bankId) ?? "Select bank"}
-                  </span>
-                </SelectTrigger>
-                <SelectContent>
-                  {bankOptions.map((o) => (
-                    <SelectItem key={o.value} value={o.value}>
-                      {o.tag}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <>
+              {/* Partner Bank */}
+              <div className="space-y-2">
+                <Label>Partner Bank</Label>
+                <Select
+                  value={bankId ? String(bankId) : ""}
+                  onValueChange={(v) => setBankId(v ? Number(v) : null)}
+                >
+                  <SelectTrigger>
+                    <span className={!bankId ? "text-muted-foreground" : ""}>
+                      {optionTag(bankOptions, bankId) ?? "Select bank"}
+                    </span>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {bankOptions.map((o) => (
+                      <SelectItem key={o.value} value={o.value}>
+                        {o.tag}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Bank Reference Number ← NEW */}
+              <div className="space-y-2">
+                <Label>
+                  Bank Reference Number{" "}
+                  <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  placeholder="e.g., HDFC-2026-991"
+                  value={bankRef}
+                  onChange={(e) => setBankRef(e.target.value)}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Enter the reference/sanction number from the partner bank.
+                </p>
+              </div>
+            </>
           )}
 
           {requiresRejection && (

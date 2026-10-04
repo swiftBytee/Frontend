@@ -2,9 +2,29 @@
 
 export type KycStatus = "pending" | "approved" | "rejected";
 
+export interface CompanyProfile {
+  company_id: number;
+  company_name: string;
+  tagline: string | null;
+  logo_path: string | null;
+  address_line1: string | null;
+  address_line2: string | null;
+  city: string | null;
+  state: string | null;
+  pincode: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  card_validity_years: number;
+}
+
 export interface AgentKyc {
   kyc_id: number;
   agent_id: number;
+
+  agent_code: string | null;
+  issue_date: string | null;
+  valid_till: string | null;
 
   // Basic
   full_name: string | null;
@@ -138,4 +158,6 @@ export interface UpdateAgentKycPayload {
 export interface ReviewAgentKycPayload {
   status: "approved" | "rejected";
   rejection_reason?: string;
+  issue_date?: string;
+  valid_till?: string;
 }

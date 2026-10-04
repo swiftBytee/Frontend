@@ -7,24 +7,43 @@ import { Landmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
 import { getNavForRole } from "@/lib/navigation";
+import { useCompany } from "@/modules/agents/hooks/useCompany";
+import { documentUrl } from "@/lib/format";
 
 export function MobileNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const user = useAuthStore((s) => s.user);
   const sections = getNavForRole(user?.role);
 
+  const { data: company } = useCompany();
+  const logoUrl = company?.logo_path ? documentUrl(company.logo_path) : null;
+  const companyName = company?.company_name || "BSA Microfinance";
+  const tagline = company?.tagline || "Better Credit, Brighter Future";
+
   return (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
       {/* Logo */}
-      <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-4">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
-          <Landmark className="h-4 w-4" />
-        </div>
-        <div className="flex flex-col leading-tight">
-          <span className="text-sm font-semibold">BSA Microfinance</span>
-          <span className="text-[10px] text-muted-foreground">
-            Better Credit, Brighter Future
-          </span>
+      <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-4">
+        {logoUrl ? (
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/95 p-1 shadow-sm ring-1 ring-white/10">
+            <img
+              src={logoUrl}
+              alt={companyName}
+              className="h-full w-full object-contain"
+            />
+          </div>
+        ) : (
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white">
+            <Landmark className="h-4 w-4" />
+          </div>
+        )}
+        <div className="flex min-w-0 flex-col leading-tight">
+          <span className="truncate text-sm font-semibold">{companyName}</span>
+          {tagline && (
+            <span className="truncate text-[10px] text-muted-foreground">
+              {tagline}
+            </span>
+          )}
         </div>
       </div>
 

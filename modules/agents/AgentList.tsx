@@ -3,7 +3,9 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
+import { buttonVariants } from "@/components/ui/button";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { AgentTable } from "./components/AgentTable";
 import { AgentFormModal } from "./modals/AgentFormModal";
@@ -23,10 +25,14 @@ export default function AgentList() {
         title="Agents"
         description="Manage field officers and their permissions"
         action={
-          <Button onClick={() => setCreateOpen(true)}>
+          <button
+            type="button"
+            onClick={() => setCreateOpen(true)}
+            className={buttonVariants()}
+          >
             <Plus className="mr-2 h-4 w-4" />
             Create Agent
-          </Button>
+          </button>
         }
       />
 

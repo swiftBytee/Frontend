@@ -3,9 +3,10 @@
 
 import Link from "next/link";
 import { ArrowRight, FileSpreadsheet } from "lucide-react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { formatCurrency, formatDate } from "@/lib/format";
 
@@ -33,10 +34,13 @@ export function RecentLoansCard({
     <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base">Recent Loans</CardTitle>
-        <Button variant="ghost" size="sm" render={<Link href="/loans" />}>
+        <Link
+          href="/loans"
+          className={buttonVariants({ variant: "ghost", size: "sm" })}
+        >
           View all
           <ArrowRight className="ml-1 h-3 w-3" />
-        </Button>
+        </Link>
       </CardHeader>
       <CardContent>
         {loading ? (

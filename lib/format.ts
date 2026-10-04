@@ -58,6 +58,12 @@ export const getInitials = (name?: string): string => {
     .toUpperCase();
 };
 
+export const labelize = (value: string | null | undefined): string => {
+  if (!value) return "";
+  return value.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+};
+
+// ---------- Select options ----------
 export interface SelectOption {
   value: string;
   tag: string;
@@ -69,4 +75,27 @@ export const optionTag = (
 ): string | undefined => {
   if (value === null || value === undefined) return undefined;
   return options.find((o) => o.value === String(value))?.tag;
+};
+
+// ---------- Document URL builder ----------
+/**
+ * Build a full URL for a document stored on the backend.
+ * Handles both:
+ *   - relative paths:     "documents/xyz.jpeg"
+ *   - Windows absolute:   "D:\...\uploads\documents\xyz.jpeg"
+ *   - Linux absolute:     "/home/.../uploads/documents/xyz.jpeg"
+ */
+export const documentUrl = (path: string | null | undefined): string | null => {
+  if (!path) return null;
+
+  const API_BASE =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+  const serverRoot = API_BASE.replace(/\/api\/v1\/?$/, "");
+
+  const normalized = path.replace(/\\/g, "/");
+  const clean = normalized.includes("uploads/")
+    ? normalized.split("uploads/").pop()!.replace(/^\/+/, "")
+    : normalized.replace(/^\/+/, "");
+
+  return `${serverRoot}/uploads/${clean}`;
 };

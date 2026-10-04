@@ -14,6 +14,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useCompany } from "@/modules/agents/hooks/useCompany";
+import { documentUrl } from "@/lib/format";
 
 const STORAGE_KEY = "bsa-sidebar-collapsed";
 
@@ -22,6 +24,11 @@ export function Sidebar() {
   const user = useAuthStore((s) => s.user);
   const [collapsed, setCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  const { data: company } = useCompany();
+  const logoUrl = company?.logo_path ? documentUrl(company.logo_path) : null;
+  const companyName = company?.company_name || "BSA Microfinance";
+  const tagline = company?.tagline || "Better Credit, Brighter Future";
 
   useEffect(() => {
     setMounted(true);
@@ -51,29 +58,62 @@ export function Sidebar() {
       {/* Logo */}
       <div
         className={cn(
-          "flex h-16 items-center border-b border-sidebar-border px-4",
-          collapsed ? "justify-center" : "justify-between",
+          "flex h-16 items-center border-b border-sidebar-border",
+          collapsed ? "justify-center px-2" : "justify-between px-3",
         )}
       >
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
-            <Landmark className="h-4 w-4" />
-          </div>
-          {!collapsed && (
-            <div className="flex flex-col leading-tight">
-              <span className="text-sm font-semibold">BSA Microfinance</span>
-              <span className="text-[10px] text-muted-foreground">
-                Better Credit, Brighter Future
-              </span>
+        <Link
+          href="/dashboard"
+          className={cn(
+            "flex min-w-0 items-center",
+            collapsed ? "gap-0" : "gap-2.5",
+          )}
+        >
+          {/* Logo image with light backdrop — or fallback icon */}
+          {logoUrl ? (
+            <div
+              className={cn(
+                "flex shrink-0 items-center justify-center rounded-lg bg-white/95 p-1 shadow-sm ring-1 ring-white/10 transition-all",
+                collapsed ? "h-10 w-15" : "h-16 w-48",
+              )}
+            >
+              <img
+                src={logoUrl}
+                alt={companyName}
+                className="h-full w-full object-contain"
+              />
+            </div>
+          ) : (
+            <div
+              className={cn(
+                "flex shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white",
+                collapsed ? "h-9 w-9" : "h-10 w-10",
+              )}
+            >
+              <Landmark className="h-4 w-4" />
             </div>
           )}
+
+          {/* {!collapsed && (
+            <div className="flex min-w-0 flex-col leading-tight">
+              <span className="truncate text-sm font-semibold">
+                {companyName}
+              </span>
+              {tagline && (
+                <span className="truncate text-[10px] text-muted-foreground">
+                  {tagline}
+                </span>
+              )}
+            </div>
+          )} */}
         </Link>
+
         {!collapsed && (
           <Button
             variant="ghost"
             size="icon"
             onClick={toggle}
-            className="h-7 w-7"
+            className="h-7 w-7 shrink-0"
             aria-label="Collapse sidebar"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -129,7 +169,7 @@ export function Sidebar() {
           collapsed && "text-center",
         )}
       >
-        {collapsed ? "v1.0" : "BSA MFI System • v1.0.0"}
+        {collapsed ? "v1.0" : `${companyName} • v1.0.0`}
       </div>
     </aside>
   );
@@ -165,7 +205,7 @@ function SidebarLink({
     return (
       <li>
         <Tooltip>
-          <TooltipTrigger>{link}</TooltipTrigger>
+          <TooltipTrigger render={link} />
           <TooltipContent side="right">{item.label}</TooltipContent>
         </Tooltip>
       </li>

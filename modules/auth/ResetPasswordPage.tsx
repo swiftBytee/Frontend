@@ -1,8 +1,7 @@
-// modules/auth/OTPPage.tsx
 import { Suspense } from "react";
-import { OTPForm } from "./components/OTPForm";
+import { ResetPasswordForm } from "./components/ResetPasswordForm";
 
-export default function OTPPage() {
+export default function ResetPasswordPage() {
   return (
     <Suspense
       fallback={
@@ -11,7 +10,7 @@ export default function OTPPage() {
         </div>
       }
     >
-      <OTPForm />
+      <ResetPasswordForm />
     </Suspense>
   );
 }

@@ -6,6 +6,8 @@ export type InterestType = "flat" | "reducing";
 export interface Loan {
   loan_id: number;
   customer_id: number;
+  aadhaar_number?: string | null;
+  pan_number?: string | null;
   agent_id: number;
   loan_type: LoanType | string;
   bank_id?: number | null;
@@ -33,6 +35,8 @@ export interface Loan {
 
 export interface CreateLoanPayload {
   customer_id: number;
+  aadhaar_number: string | null;
+  pan_number: string | null;
   loan_type: LoanType | string;
   bank_id?: number | null;
   requested_amount: number;
@@ -46,6 +50,8 @@ export interface CreateLoanPayload {
 export interface UpdateLoanPayload {
   loan_type?: LoanType | string;
   bank_id?: number | null;
+  aadhaar_number?: string;
+  pan_number?: string;
   requested_amount?: number;
   tenure_months?: number;
   interest_rate?: number;
